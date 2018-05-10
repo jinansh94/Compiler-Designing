@@ -292,7 +292,7 @@ public class Scanner {
 	public Scanner scan() throws LexicalException {
 		int pos = 0;
 		State state = State.START;
-		int startPos = 0, com_s=0;
+		int startPos = 0;
 		char op_check = '0', int_check='0';
 		boolean comment = false;
 		boolean dot_op_b = false;
