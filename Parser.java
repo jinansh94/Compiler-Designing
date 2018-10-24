@@ -584,7 +584,7 @@ public class Parser {
 		Expression lEx = null;
 		Token op=null;
 		Expression rEx = null;
-		Expression exB=null;
+		//Expression exB=null;
 		if(isKind(firstExpression)) {
 			lEx = PowerExpression();
 			while(isKind(firstMul) | isKind(firstDivide) | isKind(firstMod)) {
@@ -777,6 +777,9 @@ public class Parser {
 				e1=expression();
 				match(RSQUARE);
 				ex = new ExpressionFunctionAppWithPixel(firstToken,function,e0,e1);
+			}
+			else {
+				throw new SyntaxException(t,"Syntax Error"+t.toString());
 			}
 		}
 		else {

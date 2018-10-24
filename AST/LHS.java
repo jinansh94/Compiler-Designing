@@ -16,7 +16,7 @@ package cop5556sp18.AST;
 import cop5556sp18.Scanner.Token;
 
 public abstract class LHS extends ASTNode {
-
+	public cop5556sp18.Types.Type type;
 	public LHS(Token firstToken) {
 		super(firstToken);
 	}

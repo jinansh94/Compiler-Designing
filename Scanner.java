@@ -391,16 +391,8 @@ public class Scanner {
 						case '/': {	
 							int d= pos +1;
 							if (chars[d] == '*') {
-//								int pos_d = tokens.size();
-//								for (int i=com_s--; i<pos_d;i++) {
-//									tokens.remove(i);
-//								}
-//								state=State.START;
-//								pos++;	
 								comment = true;
 								state = State.S_COMMENT;
-			//					System.out.println("coming here for comment");
-							//com_s = pos--;
 								pos++;
 							}
 							else {
@@ -472,14 +464,7 @@ public class Scanner {
 						break;
 							
 						case '*': {
-							int star_d=pos;
-//							if(chars[star_d--] == '/'){
-//								comment = true;
-//								state = State.S_COMMENT;
-//								com_s = pos--;
-//								pos++;
-//								
-//						}
+							//int star_d=pos;
 							state = State.S_STAR;
 							op_check=ch;
 							pos++;
@@ -506,17 +491,10 @@ public class Scanner {
 					int pos_d =pos;
 					
 					while(pos_d < chars.length-1) {
-			//			System.out.println("ho raha heeeeeeee");
-			//			System.out.println(pos_d);
 						char ch_d = chars[pos_d];
 						int x= pos_d+1;
-//						if(ch_d == '\n' || ch_d=='\r') {
-//							x=line(pos);
-//						}
-	//					System.out.println(chars[x]);
-						
+					
 						if (ch_d =='*' && chars[x]=='/' ) {
-		//				System.out.println("ho raha heeeeeeee    hoooo gaya khatam");
 						pos_d++;
 						pos_d++;
 						pos=pos_d;
@@ -529,15 +507,8 @@ public class Scanner {
 					}
 			
 					if (comment == true) {
-						
-						//state=State.S_UNDEFINE;
-						//pos--;
-						//pos--;
 						pos=pos_d;
 						error(pos_d,line(pos_d), posInLine(pos_d), "unexpected EOF in comment at "+pos_d);
-						
-//						int x= pos;
-//						System.out.println(x);
 					}
 					
 				}
@@ -567,32 +538,17 @@ public class Scanner {
 						//dot_op_b=false;
 					}
 					else {
-					//	System.out.println("yaha ae raha he");
-//						float float_d = Float.parseFloat((checkFloat.toString()));
-//						if (Float.isFinite(float_d)) {
-//							tokens.add(new Token(Kind.FLOAT_LITERAL,startPos,pos-startPos));
-//							state=State.START;
-//							}
-//							else {state=State.S_UNDEFINE;
-//						}
 						try {
-					//		System.out.println((checkFloat.toString()));
 							float float_d = Float.parseFloat((checkFloat.toString()));
-					//		System.out.println("yaha to pakka bhe e e eae raha he");
-					//		System.out.println(float_d);
 							if (Float.isFinite(float_d)) {
-						//		System.out.println("fsdfsfdsfasfsa");
 								tokens.add(new Token(Kind.FLOAT_LITERAL,startPos,pos-startPos));
 								state=State.START;
 								}
 								else {
-									//state=State.S_UNDEFINE;
 									error(startPos,line(pos), posInLine(pos),"float literal is out of float range at "+startPos);
 								}
 							}
 							catch(NumberFormatException e) {
-			//					System.out.println("yaha bhe e e eae raha he");
-								//state=State.S_UNDEFINE;
 								error(startPos,line(pos), posInLine(pos),"float literal is out of float range at "+startPos);
 							}
 					}	
@@ -600,21 +556,12 @@ public class Scanner {
 				break;
 				
 				case S_ZERO:{
-//					if (isNum(ch)) {
-//						System.out.println("Test 111111");
-//						tokens.add(new Token(Kind.INTEGER_LITERAL,startPos,1));
-//						state =State.S_INT;
-//					}
-//					else 
-				//	System.out.println("0  test added");
 					if(ch == '.') {
-		//				System.out.println("float detect added");
 						state=State.S_FLOAT;
 						checkFloat.append(ch);
 						pos++;
 					}
 					else {
-	//					System.out.println("0 added");
 					tokens.add(new Token(Kind.INTEGER_LITERAL,startPos,1));
 					state=State.START;
 					}
@@ -622,24 +569,12 @@ public class Scanner {
 				break;
 				
 				case S_INT:{
-//					switch(int_check) {
-//						case('0'): {
-//							
-//							if (isNum(ch)) {
-//								p
-//							}
-//							tokens.add(new Token(Kind.INTEGER_LITERAL,startPos,pos-startPos));
-//							state= State.START;
-//						}
-//						break;
-//						default: {
 							if (isNum(ch)) {
 								pos++;
 								checkInteger.append(ch);
 								checkFloat.append(ch);
 							}
 							else if (ch=='.') {
-						//		System.out.println("jksjdakdjaskd");
 								state=State.S_FLOAT;
 								checkFloat.append(ch);
 								System.out.println(pos);
@@ -647,7 +582,6 @@ public class Scanner {
 								System.out.println("ave che aheya");
 							}
 							else {
-				//				System.out.println("came");
 								try {
 								long int_d = Long.parseLong((checkInteger.toString()));
 								if (int_d<= Integer.MAX_VALUE && int_d >= Integer.MIN_VALUE) {
@@ -657,17 +591,14 @@ public class Scanner {
 									{
 										pos = startPos;
 										error(pos,line(pos), posInLine(pos),"Number Literal is out of integer range at " + startPos);
-									}//line(pos), posInLine(pos)
+									}
 								}
 								catch(NumberFormatException e) {
-									//state=State.S_UNDEFINE;
 									pos = startPos;
 									error(pos,line(pos), posInLine(pos),"Number Literal is out of integer range at " + startPos);
 								}
 								
 							}
-						//}
-					//}
 				}
 				break;
 				
@@ -685,16 +616,12 @@ public class Scanner {
 				break;
 				
 				case S_EQL_EQL: {
-		//			System.out.println("eql state coming");
 					if (op_check == '=' && ch == '=') {
-		//				System.out.println("111");
 						tokens.add(new Token(Kind.OP_EQ,startPos,pos-startPos+1));
 						state = State.START;
 						pos++;		
 					}
 					else if(op_check == '=' && ch !='=') {
-						//state=State.S_UNDEFINE;
-						//pos--;
 						error(pos,line(pos), posInLine(pos),"= expected at "+pos);
 						
 					}
@@ -714,11 +641,7 @@ public class Scanner {
 						tokens.add(new Token(Kind.BOOLEAN_LITERAL,startPos,pos-startPos));
 						state=State.START;
 					}
-//					else if (isBoolean(checkKeyword,startPos,pos-startPos)) {
-//						state=State.START;
-//					}
 					else {
-				//		System.out.println(checkKeyword.toString());
 						tokens.add(new Token(Kind.IDENTIFIER,startPos,pos-startPos));
 						state=State.START;
 					}
@@ -742,7 +665,6 @@ public class Scanner {
 								break;
 								case('!'):{
 									tokens.add(new Token(Kind.OP_NEQ, startPos, pos-startPos+1));
-	//								System.out.println("jianananananana");
 									state=State.START;
 									pos++;
 								}
@@ -857,9 +779,8 @@ public class Scanner {
 				default: {
 					error(pos, line(pos), posInLine(pos), "undefined state");
 				}
-			}// switch state
-		} // while
-			
+			}
+		} 
 		return this;
 	}
 	
@@ -876,20 +797,6 @@ public class Scanner {
 		}
 		else return false;
 	}
-	
-//	public boolean isBoolean(StringBuilder c1,int sp1, int p1) {
-//		String dummy1 = c1.toString();
-//		if (dummy1.equals("true")) {
-//			tokens.add(new Token(Kind.BOOLEAN_LITERAL,sp1,p1-sp1));
-//			return true;
-//		}
-//		else if (dummy1.equals("false")) {
-//			tokens.add(new Token(Kind.BOOLEAN_LITERAL,sp1,p1-sp1));
-//			return true;
-//		}
-//		else return false;
-//		
-//	}
 	
 	public boolean isKeyword(StringBuilder c1,int sp1, int p1) {
 		String dummy = c1.toString();
